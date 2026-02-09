@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Advanced APK Risk Dashboard</title>
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      background: #f4f6fb;
+      margin: 0;
+      padding: 30px;
+      color: #1f2937;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 32px;
+      font-weight: 600;
+    }
+
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+      margin-bottom: 35px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 24px;
+      border-radius: 16px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, .08);
+      transition: .25s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 600;
+    }
+
+    .card p {
+      margin-top: 6px;
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .total {
+      border-top: 5px solid #2563eb;
+    }
+
+    .official {
+      border-top: 5px solid #22c55e;
+    }
+
+    .third {
+      border-top: 5px solid #f59e0b;
+    }
+
+    .risky {
+      border-top: 5px solid #ef4444;
+    }
+
+
+    .grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+
+    .info-box {
+      background: #fff;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, .08);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+
+    .chart-box {
+      background: #fff;
+      padding: 26px;
+      border-radius: 18px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, .08);
+      width: 520px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .chart-heading {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    canvas {
+      width: 160px !important;
+      height: 160px !important;
+    }
+
+    .chart-legend {
+      display: flex;
+      gap: 24px;
+      margin-top: 18px;
+      font-size: 13.5px;
+    }
+
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
+
+    .green {
+      background: #22c55e;
+    }
+
+    .orange {
+      background: #f59e0b;
+    }
+
+    .red {
+      background: #ef4444;
+    }
+
+
+    .csv-btn {
+      margin-top: 16px;
+      padding: 8px 16px;
+      background: #2563eb;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .info-box {
+      background: #fff;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, .08);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .info-row {
+      margin-bottom: 6px;
+    }
+
+    .info-download {
+      display: inline-block;
+      margin-top: 14px;
+      background: #2563eb;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .info-download:hover {
+      background: #1e4fd6;
+    }
+
+    .chart-legend {
+      display: flex;
+      justify-content: center;
+      gap: 22px;
+      margin-top: 16px;
+      font-size: 13px;
+      color: #374151;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-box {
+      width: 14px;
+      height: 8px;
+      border-radius: 2px;
+      display: inline-block;
+    }
+
+
+    .official-box {
+      background: #22c55e;
+    }
+
+    .third-box {
+      background: #f59e0b;
+    }
+
+    .risky-box {
+      background: #ef4444;
+    }
+
+
+    .list-box {
+      background: #fff;
+      padding: 26px;
+      border-radius: 16px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, .08);
+      margin-top: 35px;
+      display: none;
+    }
+
+    .list-box.active {
+      display: block;
+    }
+
+    a.url {
+      display: block;
+      margin: 7px 0;
+      color: #2563eb;
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .chart-legend .official-text {
+      color: #22c55e;
+      font-weight: 500;
+    }
+
+    .chart-legend .third-text {
+      color: #f59e0b;
+      font-weight: 500;
+    }
+
+    .chart-legend .risky-text {
+      color: #ef4444;
+      font-weight: 500;
+    }
+
+
+
+    .info-card {
+      position: fixed;
+      background: #fff;
+      padding: 16px;
+      width: 300px;
+      border-radius: 14px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, .25);
+      font-size: 13px;
+      display: none;
+      z-index: 9999;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>APK Risk Dashboard – "{{ app }}"</h1>
+
+
+  <div class="cards">
+    <div class="card total" onclick="showSection('official')">
+      <h2>{{ total }}</h2>
+      <p>Total URLs</p>
+    </div>
+    <div class="card official" onclick="showSection('official')">
+      <h2>{{ official|length }}</h2>
+      <p>Official</p>
+    </div>
+    <div class="card third" onclick="showSection('third')">
+      <h2>{{ third_party|length }}</h2>
+      <p>Third-Party</p>
+    </div>
+    <div class="card risky" onclick="showSection('risky')">
+      <h2>{{ risky|length }}</h2>
+      <p>Risky</p>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="info-box">
+      <div class="info-row"><b>App:</b> {{ app }}</div>
+      <div class="info-row"><b>Developer:</b> Meta Platforms Inc.</div>
+      <div class="info-row"><b>Trust Score:</b> {{ trust_score }}/100</div>
+      <div class="info-row"><b>Checked:</b> {{ checked_date }}</div>
+
+      <a href="/export/{{ scan_id }}" class="info-download">
+        Download CSV
+      </a>
+    </div>
+
+
+    <div class="chart-box">
+      <div class="chart-heading">APK Source Risk Distribution</div>
+      <canvas id="riskChart"></canvas>
+      <div class="chart-legend">
+        <div class="legend-item">
+          <span class="legend-box official-box"></span>
+          <span>Official</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-box third-box"></span>
+          <span>Third-Party</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-box risky-box"></span>
+          <span>Risky</span>
+        </div>
+      </div>
+
+
+
+
+    </div>
+  </div>
+
+
+  <div id="official" class="list-box active">
+    <h3>Official APK URLs</h3>
+    {% for u in official %}
+    <a class="url" href="{{ u }}" target="_blank" onmousemove="showInfo(event, '{{ app }}', '{{ u }}', 'Official')"
+      onmouseleave="hideInfo()">
+      {{ u }}
+    </a>
+
+    {% endfor %}
+  </div>
+
+  <div id="third" class="list-box">
+    <h3>Third-Party APK URLs</h3>
+    {% for u in third_party %}
+    <a class="url" href="{{ u }}" target="_blank" onmousemove="showInfo(event, '{{ app }}', '{{ u }}', 'Third-Party')"
+      onmouseleave="hideInfo()">{{ u }}</a>
+    {% endfor %}
+  </div>
+
+  <div id="risky" class="list-box">
+    <h3>Risky APK URLs</h3>
+    {% for u in risky %}
+    <a class="url" href="{{ u }}" target="_blank" onmousemove="showInfo(event,'Risky','{{ u }}')"
+      onmouseleave="hideInfo()">{{ u }}</a>
+    {% endfor %}
+  </div>
+
+  <div id="infoCard" class="info-card"></div>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll(".list-box").forEach(x => x.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+      document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+    }
+
+    function showInfo(e, app, url, type) {
+      const card = document.getElementById("infoCard");
+      const domain = new URL(url).hostname;
+
+      let trust = "Medium";
+      let rating = "3.8 ⭐";
+      let store = "Third-Party Source";
+      let reasons = [];
+
+      if (type === "Official") {
+        trust = "High";
+        rating = "4.5 ⭐";
+        store = "Google Play / Official Website";
+        reasons = [
+          "Domain matches official owner",
+          "Verified distribution source",
+          "Low security risk"
+        ];
+      }
+
+      if (type === "Third-Party") {
+        reasons = [
+          "Hosted on third-party APK website",
+          "Not published by official developer",
+          "Manual verification required"
+        ];
+      }
+
+      if (type === "Risky") {
+        trust = "Low";
+        rating = "2.6 ⭐";
+        reasons = [
+          "Contains risky keywords (mod / crack / hack)",
+          "Unverified APK source",
+          "High malware probability"
+        ];
+      }
+
+      card.innerHTML = `
+    <h4>App Profile</h4>
+    <p><b>App:</b> ${app}</p>
+    <p><b>Domain:</b> ${domain}</p>
+    <p><b>Category:</b> ${type}</p>
+    <p><b>Developer:</b> Meta Platforms Inc.</p>
+    <p><b>Store:</b> ${store}</p>
+    <p><b>Trust:</b> ${trust}</p>
+    <p><b>Rating:</b> ${rating}</p>
+    <p><b>Why:</b></p>
+    <ul>${reasons.map(r => `<li>${r}</li>`).join("")}</ul>
+  `;
+
+      let x = e.clientX + 15;
+      let y = e.clientY + 15;
+
+      if (x + 340 > window.innerWidth) x -= 360;
+      if (y + 260 > window.innerHeight) y -= 280;
+
+      card.style.left = x + "px";
+      card.style.top = y + "px";
+      card.style.display = "block";
+    }
+
+
+    function hideInfo() {
+      document.getElementById("infoCard").style.display = "none";
+    }
+
+    new Chart(document.getElementById("riskChart"), {
+  type: "doughnut",
+  data: {
+    labels: ["Official", "Third-Party", "Risky"],
+    datasets: [{
+      data: [{{ official|length }}, {{ third_party|length }}, {{ risky|length }}],
+      backgroundColor: ["#22c55e", "#f59e0b", "#ef4444"],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: false,
+    cutout: "68%",
+    plugins: {
+      legend: { display: false }
+    }
+  }
+});
+  </script>
+
+</body>
+
+</html>

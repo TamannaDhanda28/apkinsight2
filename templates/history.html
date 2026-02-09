@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>APK Scan History</title>
+
+  <style>
+    body {
+      font-family: Inter;
+      background: #f4f6fb;
+      padding: 30px
+    }
+
+    table {
+      width: 100%;
+      background: #fff;
+      border-collapse: collapse;
+      border-radius: 12px;
+      overflow: hidden
+    }
+
+    th,
+    td {
+      padding: 14px;
+      border-bottom: 1px solid #eee;
+      text-align: center
+    }
+
+    th {
+      background: #4f46e5;
+      color: #fff
+    }
+
+    .delete-btn {
+      background: #ef4444;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>APK Scan History</h2>
+
+  <table>
+    <tr>
+      <th>Date</th>
+      <th>App</th>
+      <th>Official</th>
+      <th>Third</th>
+      <th>Risky</th>
+      <th>Trust</th>
+      <th>Export</th>
+      <th>Delete</th>
+    </tr>
+
+    {% for r in records %}
+    <tr id="row-{{ r[0] }}">
+      <td>{{ r[6] }}</td>
+      <td>{{ r[1] }}</td>
+      <td>{{ r[2] }}</td>
+      <td>{{ r[3] }}</td>
+      <td>{{ r[4] }}</td>
+      <td>{{ r[5] }}</td>
+      <td><a href="/export/{{ r[0] }}">CSV</a></td>
+      <td><button class="delete-btn" onclick="deleteRow({{ r[0] }})">Delete</button></td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <script>
+    function deleteRow(id) {
+      if (!confirm("Delete this history?")) return;
+      fetch(`/delete-history/${id}`, { method: "DELETE" })
+        .then(() => document.getElementById("row-" + id).remove());
+    }
+  </script>
+
+</body>
+
+</html>

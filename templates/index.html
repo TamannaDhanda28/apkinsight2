@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>APK Insight – Web Scraping Risk Analysis</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f7fc;
+      color: #1f2937;
+    }
+
+    header {
+      background: linear-gradient(90deg, black, #5b7cfa);
+      padding: 16px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px solid #e6edff;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: white;
+    }
+
+    .logo {
+      background: white;
+      color: #4f6ee8;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .brand-name {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+    }
+
+    nav {
+      display: flex;
+      gap: 12px;
+    }
+
+    nav a {
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      transition: all 0.25s ease;
+    }
+
+    nav a:hover,
+    nav a.active {
+      background: white;
+      color: #4f6ee8;
+      font-weight: 600;
+    }
+
+    main {
+      min-height: calc(100vh - 150px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-top: 1px solid #e5edff;
+      border-bottom: 1px solid #e5edff;
+    }
+
+    .card {
+      background: #ffffff;
+      width: 420px;
+      padding: 42px;
+      border-radius: 18px;
+      border: 2px solid #4f6ee840;
+      box-shadow: 0 18px 45px rgba(79, 110, 232, 0.18);
+      text-align: center;
+    }
+
+    .card h1 {
+      font-size: 22px;
+      margin-bottom: 12px;
+      color: #1f2a44;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: #6b7280;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .card input {
+      width: 100%;
+      padding: 14px;
+      font-size: 14px;
+      border-radius: 10px;
+      border: 1px solid #dbe3ff;
+      margin-bottom: 18px;
+    }
+
+    .card button {
+      width: 100%;
+      padding: 14px;
+      background: #2b63e8;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.25s ease;
+    }
+
+    .card button:hover {
+      background: #1f4fd4;
+    }
+
+    .history-link {
+      margin-top: 18px;
+      display: block;
+      text-decoration: none;
+      font-size: 14px;
+      color: #2b63e8;
+      font-weight: 500;
+    }
+
+    .features {
+      margin-top: 24px;
+      font-size: 13px;
+      color: #4b5563;
+      text-align: left;
+    }
+
+    .features li {
+      margin: 6px 0;
+    }
+
+
+    footer {
+      background: linear-gradient(90deg, black, #5b7cfa);
+      color: #eaf0ff;
+      text-align: center;
+      padding: 14px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <header>
+    <div class="brand">
+      <div class="logo">APK</div>
+      <div class="brand-name">APK Insight</div>
+    </div>
+
+    <nav>
+      <a href="/" class="active">Home</a>
+      <a href="/about">About</a>
+      <a href="/history">Scan History</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="card">
+      <h1>APK Risk Analysis Tool</h1>
+      <p>
+        Security-focused web scraping platform to identify
+        official, third-party and high-risk APK download sources.
+      </p>
+
+      <form method="post" action="/search">
+        <input type="text" name="app_name" placeholder="Enter app name" required>
+        <button type="submit">Analyze APK</button>
+      </form>
+
+      <a class="history-link" href="/history">View Scan History →</a>
+
+    </div>
+  </main>
+
+  <footer>
+    © 2026 <strong>APK Insight</strong> · Web Scraping & Risk Intelligence Platform
+  </footer>
+
+</body>
+
+</html>
