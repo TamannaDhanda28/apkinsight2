@@ -9,7 +9,7 @@ import sqlite3, json, csv, io
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
-SERP_API_KEY = "7ebd6ed5e1999a5ae05917ed0fe8733643137d7b05afdea7ba89f8ca42a820f0"
+SERP_API_KEY = os.getenv("SERP_API_KEY")
 
 conn = sqlite3.connect("apkinsight.db", check_same_thread=False)
 cursor = conn.cursor()
