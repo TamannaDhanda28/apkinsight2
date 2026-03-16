@@ -20,7 +20,7 @@ The application calculates a **Trust Score** based on detected risky keywords an
 # 🧠 How It Works
 
 1. User enters an **app name** in the search field.
-2. The system performs a **Google search for APK download sources** using SerpAPI.
+2. The system performs a **Google search for APK download sources** using SerpAPI.(using you own APIs)
 3. URLs are analyzed based on:
    - Trusted official domains
    - Risk keywords (mod, crack, hack, unlocked)
